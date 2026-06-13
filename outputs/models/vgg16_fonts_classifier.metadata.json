@@ -1,0 +1,49 @@
+{
+  "classes": [
+    "Arial",
+    "Bookman",
+    "Calibri",
+    "Candara",
+    "CenturyGothic",
+    "ComicSansMS",
+    "CourierNew",
+    "FranclinGothic",
+    "Garamond",
+    "Georgia",
+    "Helvetica",
+    "Lobster",
+    "LucidaSans",
+    "MS_Sans_Serif",
+    "MonotypeCorsiva",
+    "Palatino",
+    "SegoeUI",
+    "TimesNewRoman",
+    "TrebuchetMS",
+    "Verdana"
+  ],
+  "image_size": [
+    128,
+    32
+  ],
+  "config": {
+    "dataset": "c:\\Users\\jvict\\OneDrive\\Documentos\\Projetos\\trabalho-redes-neurais\\dataset\\20_fonts_classification",
+    "output": "c:\\Users\\jvict\\OneDrive\\Documentos\\Projetos\\trabalho-redes-neurais\\outputs",
+    "image_size": [
+      128,
+      32
+    ],
+    "seed": 42,
+    "batch_size": 256,
+    "mlp_epochs": 24,
+    "cnn_epochs": 24,
+    "vgg_head_epochs": 8,
+    "vgg_finetune_epochs": 16,
+    "mlp_lr": 0.001,
+    "cnn_lr": 0.001,
+    "vgg_head_lr": 0.001,
+    "vgg_finetune_lr": 1e-05,
+    "vgg_trainable_layers": 4,
+    "patience": 6,
+    "vgg_weights": "imagenet"
+  }
+}

@@ -254,6 +254,7 @@
         }
       ],
       "best_val_accuracy": 0.9743333458900452,
+      "val_loss_at_best_val_accuracy": 0.0965794175863266,
       "best_val_loss": 0.0965794175863266,
       "epochs_ran": 24,
       "parameter_count": 1084308,
@@ -502,6 +503,7 @@
         }
       ],
       "best_val_accuracy": 0.9933333396911621,
+      "val_loss_at_best_val_accuracy": 0.018832672387361526,
       "best_val_loss": 0.018832672387361526,
       "epochs_ran": 24,
       "parameter_count": 1144852,
@@ -774,7 +776,8 @@
         }
       ],
       "best_val_accuracy": 0.9276666641235352,
-      "best_val_loss": 0.24535278975963593,
+      "val_loss_at_best_val_accuracy": 0.24535278975963593,
+      "best_val_loss": 0.2345159351825714,
       "epochs_ran": 24,
       "parameter_count": 14782932,
       "phases": {
@@ -846,6 +849,7 @@
             }
           ],
           "best_val_accuracy": 0.5916666388511658,
+          "val_loss_at_best_val_accuracy": 1.2505457401275635,
           "best_val_loss": 1.2505457401275635,
           "epochs_ran": 8,
           "parameter_count": 14782932
@@ -982,7 +986,8 @@
             }
           ],
           "best_val_accuracy": 0.9276666641235352,
-          "best_val_loss": 0.24535278975963593,
+          "val_loss_at_best_val_accuracy": 0.24535278975963593,
+          "best_val_loss": 0.2345159351825714,
           "epochs_ran": 16,
           "parameter_count": 14782932
         }

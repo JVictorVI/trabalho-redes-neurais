@@ -64,11 +64,14 @@ def train_keras_model(
         )
 
     val_accuracies = history.history["val_accuracy"]
-    best_index = int(np.argmax(val_accuracies))
+    val_losses = history.history["val_loss"]
+    best_accuracy_index = int(np.argmax(val_accuracies))
+    min_loss_index = int(np.argmin(val_losses))
     return {
         "history": rows,
-        "best_val_accuracy": float(history.history["val_accuracy"][best_index]),
-        "best_val_loss": float(history.history["val_loss"][best_index]),
+        "best_val_accuracy": float(history.history["val_accuracy"][best_accuracy_index]),
+        "val_loss_at_best_val_accuracy": float(history.history["val_loss"][best_accuracy_index]),
+        "best_val_loss": float(history.history["val_loss"][min_loss_index]),
         "epochs_ran": len(rows),
         "parameter_count": int(model.count_params()),
     }

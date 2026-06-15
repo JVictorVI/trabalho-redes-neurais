@@ -11,6 +11,8 @@ from tensorflow import keras
 
 from data_utils import load_image_array, load_image_vector
 
+VALID_PREPROCESSING = {"ink_as_signal", "pretrained_rgb_original_contrast"}
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Classifica uma imagem com o modelo Keras salvo.")
@@ -32,7 +34,12 @@ def load_model_metadata(model_path: Path) -> dict[str, object]:
     return json.loads(metadata_path.read_text(encoding="utf-8"))
 
 
-def prepare_input(image_path: Path, image_size: tuple[int, int], input_shape: tuple[int | None, ...]) -> np.ndarray:
+def prepare_input(
+    image_path: Path,
+    image_size: tuple[int, int],
+    input_shape: tuple[int | None, ...],
+    input_preprocessing: str,
+) -> np.ndarray:
     width, height = image_size
     if len(input_shape) == 2:
         return load_image_vector(image_path, (width, height))[None, :]
@@ -40,6 +47,8 @@ def prepare_input(image_path: Path, image_size: tuple[int, int], input_shape: tu
     channels = input_shape[-1]
     image = load_image_array(image_path, (width, height))[None, :, :, None]
     if channels == 3:
+        if input_preprocessing == "pretrained_rgb_original_contrast":
+            image = 1.0 - image
         return np.repeat(image, 3, axis=-1)
     return image
 
@@ -56,9 +65,12 @@ def main() -> None:
     metadata = load_model_metadata(args.model)
     classes = [str(item) for item in metadata["classes"]]
     width, height = [int(item) for item in metadata["image_size"]]
+    input_preprocessing = str(metadata.get("input_preprocessing", "ink_as_signal"))
+    if input_preprocessing not in VALID_PREPROCESSING:
+        raise ValueError(f"Pre-processamento desconhecido nos metadados: {input_preprocessing}")
 
     model = keras.models.load_model(args.model)
-    x = prepare_input(args.image, (width, height), model.input_shape)
+    x = prepare_input(args.image, (width, height), model.input_shape, input_preprocessing)
     probs = model.predict(x, verbose=0)[0]
     order = np.argsort(probs)[::-1][: args.top_k]
 

@@ -25,6 +25,7 @@
     128,
     32
   ],
+  "input_preprocessing": "pretrained_rgb_original_contrast",
   "config": {
     "dataset": "c:\\Users\\jvict\\OneDrive\\Documentos\\Projetos\\trabalho-redes-neurais\\dataset\\20_fonts_classification",
     "output": "c:\\Users\\jvict\\OneDrive\\Documentos\\Projetos\\trabalho-redes-neurais\\outputs",

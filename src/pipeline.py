@@ -60,11 +60,13 @@ def save_keras_model(
     classes: list[str],
     image_size: tuple[int, int],
     config: dict[str, Any],
+    input_preprocessing: str,
 ) -> None:
     model.save(path)
     metadata = {
         "classes": classes,
         "image_size": list(image_size),
+        "input_preprocessing": input_preprocessing,
         "config": config,
     }
     path.with_suffix(".metadata.json").write_text(
@@ -107,11 +109,13 @@ def merge_training_phases(
         for row in result["history"]:
             rows.append({**row, "epoch": len(rows) + 1, "phase": phase_name})
 
-    best_row = max(rows, key=lambda row: row["val_accuracy"])
+    best_accuracy_row = max(rows, key=lambda row: row["val_accuracy"])
+    min_loss_row = min(rows, key=lambda row: row["val_loss"])
     return {
         "history": rows,
-        "best_val_accuracy": float(best_row["val_accuracy"]),
-        "best_val_loss": float(best_row["val_loss"]),
+        "best_val_accuracy": float(best_accuracy_row["val_accuracy"]),
+        "val_loss_at_best_val_accuracy": float(best_accuracy_row["val_loss"]),
+        "best_val_loss": float(min_loss_row["val_loss"]),
         "epochs_ran": len(rows),
         "parameter_count": int(finetune_result["parameter_count"]),
         "phases": {
@@ -326,13 +330,21 @@ def run_pipeline(args: Any) -> dict[str, Any]:
     plot_f1(cnn_report, paths["figures"] / FIGURE_NAMES["f1"], "CNN BatchNorm")
 
     print("Salvando modelos Keras...")
-    save_keras_model(mlp_model, paths["models"] / "mlp_fonts_classifier.keras", data.classes, image_size, config)
+    save_keras_model(
+        mlp_model,
+        paths["models"] / "mlp_fonts_classifier.keras",
+        data.classes,
+        image_size,
+        config,
+        "ink_as_signal",
+    )
     save_keras_model(
         cnn_model,
         paths["models"] / "cnn_batchnorm_fonts_classifier.keras",
         data.classes,
         image_size,
         config,
+        "ink_as_signal",
     )
     save_keras_model(
         vgg_model,
@@ -340,6 +352,7 @@ def run_pipeline(args: Any) -> dict[str, Any]:
         data.classes,
         image_size,
         config,
+        "pretrained_rgb_original_contrast",
     )
 
     print("Pipeline concluído.")
